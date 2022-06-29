@@ -18,16 +18,19 @@ import BottomBarModel from "./bottomBarModel"
 @Component
 export struct BottomBar {
   @State model: BottomBarModel.Model = new BottomBarModel.Model();
+  @State opacityValue: number = 0
   private onSelect: (() => void) = null
 
   private onClick() {
+    if (this.onSelect != null) {
+      this.onSelect();
+    }
+    this.model.showPopUp = !this.model.showPopUp
     animateTo({
       duration: 200,
     }, () => {
-      this.model.showPopUp = !this.model.showPopUp
+      this.opacityValue=1
     })
-    //      this.model.showAnimationDotMenu = !this.model.showAnimationDotMenu
-
   }
 
   build() {
@@ -46,8 +49,8 @@ export struct BottomBar {
 
         Stack() { // floating action button
           Rect()
-            .width('56vp')
-            .height('56vp')
+            .width(this.model.fabWidth)
+            .height(this.model.fabHeight)
             .fill(Color.Black)
             .radius('30vp')
 
@@ -55,64 +58,87 @@ export struct BottomBar {
             .width('28vp')
             .height('28vp')
 
-        }.offset({ x: '0vp', y: '-28vp' })
+        }.offset({ x: '0vp', y: '-'+(Number(this.model.elevation.slice(0,-2))-28).toString()+'vp' })
 
-        Image($r('app.media.search')) // action item
-          .width('24vp')
-          .height('24vp')
-          .offset({ x: '115vp', y: '0vp' })
+        if(this.model.overflowMenu.length==1){
+          Image(this.model.overflowMenu[0].image) // action item
+            .width(this.model.overflowMenu[0].width)
+            .height(this.model.overflowMenu[0].height)
+            .offset({ x: '115vp', y: '0vp' })
+        }
+        else if (this.model.overflowMenu.length==2){
+          Image(this.model.overflowMenu[0].image) // action item
+            .width(this.model.overflowMenu[0].width)
+            .height(this.model.overflowMenu[0].height)
+            .offset({ x: '115vp', y: '0vp' })
 
-        if (this.model.showPopUp) {
-          Circle()
-            .width('34vp')
-            .height('34vp')
-            .fill("rgba(0,0,0,0.3)")
+          Image(this.model.overflowMenu[1].image) // action item
+            .width(this.model.overflowMenu[1].width)
+            .height(this.model.overflowMenu[1].height)
+            .offset({ x: '155vp', y: '0vp' })
+        }
+        else{
+          Image(this.model.overflowMenu[0].image) // action item
+            .width(this.model.overflowMenu[0].width)
+            .height(this.model.overflowMenu[0].height)
+            .offset({ x: '115vp', y: '0vp' })
+          if (this.model.showPopUp) { // overflow menu shadow
+            Circle()
+              .width('34vp')
+              .height('34vp')
+              .fill("rgb(167,51,255)")
+              .offset({ x: '155vp', y: '0vp' })
+              .opacity(this.opacityValue)
+              .onClick(() => this.onClick())
+          }
+
+          Image($r('app.media.dot_menu')) // overflow menu
+            .width('5vp')
+            .height('24vp')
             .offset({ x: '155vp', y: '0vp' })
             .onClick(() => this.onClick())
-        }
-
-        Image($r('app.media.dot_menu')) // overflow menu
-          .width('5vp')
-          .height('24vp')
-          .offset({ x: '155vp', y: '0vp' })
-          .onClick(() => this.onClick())
 
 
-        if (this.model.showPopUp) {
-          Stack() { // overflow pop-up
-            Rect()
-              .width('100%')
-              .height('100%')
-              .fill('rgb(145,0,255)')
-              .radius('7vp')
-            Flex({
-              direction: FlexDirection.Column,
-              justifyContent: FlexAlign.SpaceAround,
-              alignItems: ItemAlign.Start
-            }) {
-              Text('Settings')
-                .fontColor(Color.White)
-                .fontWeight(600)
-                .fontSize('16vp')
-              Text('Send Feedback')
-                .fontColor(Color.White)
-                .fontWeight(600)
-                .fontSize('16vp')
-              Text('Help')
-                .fontColor(Color.White)
-                .fontWeight(600)
-                .fontSize('16vp')
-
+          if (this.model.showPopUp) {
+            Stack() { // overflow pop-up
+              Rect()
+                .width('100%')
+                .height('100%')
+                .fill('rgb(145,0,255)')
+                .radius('7vp')
+              Flex({
+                direction: FlexDirection.Column,
+                justifyContent: FlexAlign.SpaceAround,
+                alignItems: ItemAlign.Start
+              }) {
+                ForEach(this.model.overflowMenu.slice(1,this.model.overflowMenu.length), item => {
+                  Image(item.image) // overflow menu
+                    .width(item.width)
+                    .height(item.height)
+                })
+                //              Text('Settings')
+                //                .fontColor(Color.White)
+                //                .fontWeight(600)
+                //                .fontSize('16vp')
+                //              Text('Send Feedback')
+                //                .fontColor(Color.White)
+                //                .fontWeight(600)
+                //                .fontSize('16vp')
+                //              Text('Help')
+                //                .fontColor(Color.White)
+                //                .fontWeight(600)
+                //                .fontSize('16vp')
+              }
             }
+            .width('140vp')
+            .height((41*this.model.overflowMenu.length).toString()+'vp')
+            .opacity(this.opacityValue)
+            .offset({ x: '90vp', y:'-'+(150+41*(this.model.overflowMenu.length-3)).toString()+'vp' })
           }
-          .width('140vp')
-          .height('123vp')
-          .offset({ x: '90vp', y: '-150vp' })
         }
-
 
       }.width('100%')
-      .height('56vp')
+      .height(this.model.elevation)
     }
     .width('100%')
     .height('100%')

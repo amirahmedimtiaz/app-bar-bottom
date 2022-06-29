@@ -1,4 +1,4 @@
-//import prompt from '@system.prompt';
+import prompt from '@system.prompt';
 import { BottomBar, BottomBarModel }  from "@ohos/app-bottom-bar"
 
 @Entry
@@ -14,7 +14,12 @@ struct Index {
     Stack() {
       Text('Hello world').fontWeight(600).fontSize(50)
       BottomBar({
-        model: this.bottomBarModel
+        model: this.bottomBarModel,
+        onSelect: () => {
+//          prompt.showToast({
+//            message: "bottom-bar"
+//          })
+        }
       })
     }
 
