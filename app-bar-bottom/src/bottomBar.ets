@@ -13,73 +13,111 @@
  * limitations under the License.
  */
 
-import SwitchModel from "./switchModel"
+import BottomBarModel from "./bottomBarModel"
 
 @Component
-export struct Switch {
-  @State model: SwitchModel.Model = new SwitchModel.Model();
-  private onSelect: ((id: number, isOn: boolean) => void) = null
+export struct BottomBar {
+  @State model: BottomBarModel.Model = new BottomBarModel.Model();
+  private onSelect: (() => void) = null
 
   private onClick() {
-    if (this.onSelect != null) {
-      this.onSelect(this.model.getSwitchId(),!this.model.getIsOn());
-    }
-    if (this.model.getDisabled() == false) {
-      this.model.setShowAnimation(true)
-      animateTo({
-        duration: 100,
-        onFinish: () => {
-          this.model.setShowAnimation(false)
-        }
-      }, () => {
-        if (this.model.getIsOn() == false) {
-          this.model.setIsOn(true)
-        }
-        else {
-          this.model.setIsOn(false)
-        }
-      })
-    }
+    animateTo({
+      duration: 200,
+    }, () => {
+      this.model.showPopUp = !this.model.showPopUp
+    })
+    //      this.model.showAnimationDotMenu = !this.model.showAnimationDotMenu
 
   }
 
   build() {
-    Shape() {
-      Button()
-        .width('52vp')
-        .height('32vp')
-        .backgroundColor(this.model.getIsOn() ? this.model.getOnBackgroundColor() : this.model.getOffBackgroundColor())
-        .borderColor(this.model.getIsOn() ? this.model.getOnBorderColor() : this.model.getOffBorderColor())
-        .borderWidth('2vp')
-        .borderRadius('2vp')
+    Row() {
+      Stack() {
 
-      if (this.model.getShowAnimation()) {
-        Circle()
-          .width('38vp').height('38vp').fill("rgba(0,0,0,0.3)")
-          .offset({ x: this.model.getIsOn() ? '17vp' : '-3.5vp', y: '-3vp' })
-      }
-      Circle()
-        .width(this.model.getShowAnimation() ? '28vp' :
-          (this.model.getIsOn ? '24vp' : '16vp'))
-        .height(this.model.getShowAnimation() ? '28vp' :
-          (this.model.getIsOn ? '24vp' : '16vp'))
-        .offset({
-          x: this.model.getShowAnimation() ?
-            (this.model.getIsOn() ? '20vp' : '2vp')
-                                           :
-            (this.model.getIsOn() ? '23vp' : '5vp'),
-          y: this.model.getShowAnimation() ? '2vp' : ((16 - (Number((this.model.getIsOn ? '24vp' : '16vp')
-            .substring(0, 2))) / 2).toString() + 'vp')
-        })
-        .fill(this.model.getIsOn() ? this.model.getOnCircleColor() : this.model.getOffCircleColor())
-      if (this.model.getWithIcon()) {
-        Image(this.model.getIcon())
-          .width('10')
-          .height('10')
-          .offset({ x: this.model.getIsOn() ? '30vp' : '11vp', y: '11vp' })
-      }
-    }.onClick(() => this.onClick()).padding('5vp').opacity(this.model.getDisabled() ? 0.5 : 1)
+        Rect() // container
+          .width('100%')
+          .height('100%')
+          .fill('rgb(145,0,255)')
+
+        Image($r('app.media.menu')) // navigation icon
+          .width('20vp')
+          .height('16vp')
+          .offset({ x: '-145vp', y: '0vp' })
+
+        Stack() { // floating action button
+          Rect()
+            .width('56vp')
+            .height('56vp')
+            .fill(Color.Black)
+            .radius('30vp')
+
+          Image($r('app.media.plus'))
+            .width('28vp')
+            .height('28vp')
+
+        }.offset({ x: '0vp', y: '-28vp' })
+
+        Image($r('app.media.search')) // action item
+          .width('24vp')
+          .height('24vp')
+          .offset({ x: '115vp', y: '0vp' })
+
+        if (this.model.showPopUp) {
+          Circle()
+            .width('34vp')
+            .height('34vp')
+            .fill("rgba(0,0,0,0.3)")
+            .offset({ x: '155vp', y: '0vp' })
+            .onClick(() => this.onClick())
+        }
+
+        Image($r('app.media.dot_menu')) // overflow menu
+          .width('5vp')
+          .height('24vp')
+          .offset({ x: '155vp', y: '0vp' })
+          .onClick(() => this.onClick())
+
+
+        if (this.model.showPopUp) {
+          Stack() { // overflow pop-up
+            Rect()
+              .width('100%')
+              .height('100%')
+              .fill('rgb(145,0,255)')
+              .radius('7vp')
+            Flex({
+              direction: FlexDirection.Column,
+              justifyContent: FlexAlign.SpaceAround,
+              alignItems: ItemAlign.Start
+            }) {
+              Text('Settings')
+                .fontColor(Color.White)
+                .fontWeight(600)
+                .fontSize('16vp')
+              Text('Send Feedback')
+                .fontColor(Color.White)
+                .fontWeight(600)
+                .fontSize('16vp')
+              Text('Help')
+                .fontColor(Color.White)
+                .fontWeight(600)
+                .fontSize('16vp')
+
+            }
+          }
+          .width('140vp')
+          .height('123vp')
+          .offset({ x: '90vp', y: '-150vp' })
+        }
+
+
+      }.width('100%')
+      .height('56vp')
+    }
+    .width('100%')
+    .height('100%')
+    .alignItems(VerticalAlign.Bottom)
   }
 }
 
-export { SwitchModel } from "./switchModel";
+export { BottomBarModel } from "./bottomBarModel";
