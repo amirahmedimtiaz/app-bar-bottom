@@ -27,9 +27,10 @@ export struct BottomBar {
     }
     this.model.showPopUp = !this.model.showPopUp
     animateTo({
-      duration: 200,
+      duration: 300,
     }, () => {
-      this.opacityValue=1
+      if(this.opacityValue==0) this.opacityValue = 1
+      else this.opacityValue = 0
     })
   }
 
@@ -58,29 +59,29 @@ export struct BottomBar {
             .width('28vp')
             .height('28vp')
 
-        }.offset({ x: '0vp', y: '-'+(Number(this.model.elevation.slice(0,-2))-28).toString()+'vp' })
+        }.offset({ x: '0vp', y: '-' + (Number(this.model.elevation.slice(0, -2)) - 28).toString() + 'vp' })
 
-        if(this.model.overflowMenu.length==1){
-          Image(this.model.overflowMenu[0].image) // action item
-            .width(this.model.overflowMenu[0].width)
-            .height(this.model.overflowMenu[0].height)
+        if (this.model.optionIconsMenu.length == 1) {
+          Image(this.model.optionIconsMenu[0].image) // action item
+            .width(this.model.optionIconsMenu[0].width)
+            .height(this.model.optionIconsMenu[0].height)
             .offset({ x: '115vp', y: '0vp' })
         }
-        else if (this.model.overflowMenu.length==2){
-          Image(this.model.overflowMenu[0].image) // action item
-            .width(this.model.overflowMenu[0].width)
-            .height(this.model.overflowMenu[0].height)
+        else if (this.model.optionIconsMenu.length == 2) {
+          Image(this.model.optionIconsMenu[0].image) // action item
+            .width(this.model.optionIconsMenu[0].width)
+            .height(this.model.optionIconsMenu[0].height)
             .offset({ x: '115vp', y: '0vp' })
 
-          Image(this.model.overflowMenu[1].image) // action item
-            .width(this.model.overflowMenu[1].width)
-            .height(this.model.overflowMenu[1].height)
+          Image(this.model.optionIconsMenu[1].image) // action item
+            .width(this.model.optionIconsMenu[1].width)
+            .height(this.model.optionIconsMenu[1].height)
             .offset({ x: '155vp', y: '0vp' })
         }
-        else{
-          Image(this.model.overflowMenu[0].image) // action item
-            .width(this.model.overflowMenu[0].width)
-            .height(this.model.overflowMenu[0].height)
+        else {
+          Image(this.model.optionIconsMenu[0].image) // action item
+            .width(this.model.optionIconsMenu[0].width)
+            .height(this.model.optionIconsMenu[0].height)
             .offset({ x: '115vp', y: '0vp' })
           if (this.model.showPopUp) { // overflow menu shadow
             Circle()
@@ -93,7 +94,7 @@ export struct BottomBar {
           }
 
           Image($r('app.media.dot_menu')) // overflow menu
-            .width('5vp')
+            .width('6vp')
             .height('24vp')
             .offset({ x: '155vp', y: '0vp' })
             .onClick(() => this.onClick())
@@ -111,29 +112,18 @@ export struct BottomBar {
                 justifyContent: FlexAlign.SpaceAround,
                 alignItems: ItemAlign.Start
               }) {
-                ForEach(this.model.overflowMenu.slice(1,this.model.overflowMenu.length), item => {
-                  Image(item.image) // overflow menu
-                    .width(item.width)
-                    .height(item.height)
+                ForEach(this.model.optionIconsMenu.slice(1, this.model.optionIconsMenu.length), item => {
+                  Text(item.text)
+                    .fontColor(Color.White)
+                    .fontWeight(600)
+                    .fontSize('17vp')
                 })
-                //              Text('Settings')
-                //                .fontColor(Color.White)
-                //                .fontWeight(600)
-                //                .fontSize('16vp')
-                //              Text('Send Feedback')
-                //                .fontColor(Color.White)
-                //                .fontWeight(600)
-                //                .fontSize('16vp')
-                //              Text('Help')
-                //                .fontColor(Color.White)
-                //                .fontWeight(600)
-                //                .fontSize('16vp')
               }
             }
             .width('140vp')
-            .height((41*this.model.overflowMenu.length).toString()+'vp')
+            .height((41 * this.model.optionIconsMenu.length).toString() + 'vp')
             .opacity(this.opacityValue)
-            .offset({ x: '90vp', y:'-'+(150+41*(this.model.overflowMenu.length-3)).toString()+'vp' })
+            .offset({ x: '90vp', y: '-' + (150 + 41 * (this.model.optionIconsMenu.length - 3)).toString() + 'vp' })
           }
         }
 

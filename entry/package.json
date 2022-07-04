@@ -10,6 +10,6 @@
   "repository": {},
   "license": "ISC",
   "dependencies": {
-    "@ohos/app-bottom-bar": "file:../app-bar-bottom"
+    "@ohos/app-bottom-bar": "file:../appbottombar"
   }
 }

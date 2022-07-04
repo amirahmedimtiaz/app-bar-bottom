@@ -16,9 +16,9 @@ struct Index {
       BottomBar({
         model: this.bottomBarModel,
         onSelect: () => {
-//          prompt.showToast({
-//            message: "bottom-bar"
-//          })
+          //          prompt.showToast({
+          //            message: "bottom-bar"
+          //          })
         }
       })
     }
