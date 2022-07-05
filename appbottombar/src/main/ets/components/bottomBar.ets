@@ -25,11 +25,11 @@ export struct BottomBar {
     if (this.onSelect != null) {
       this.onSelect();
     }
-    this.model.showPopUp = !this.model.showPopUp
+    this.model.setShowPopUp(!this.model.getShowPopUp())
     animateTo({
       duration: 300,
     }, () => {
-      if(this.opacityValue==0) this.opacityValue = 1
+      if (this.opacityValue == 0) this.opacityValue = 1
       else this.opacityValue = 0
     })
   }
@@ -37,98 +37,120 @@ export struct BottomBar {
   build() {
     Row() {
       Stack() {
-
         Rect() // container
           .width('100%')
           .height('100%')
-          .fill('rgb(145,0,255)')
-
-        Image($r('app.media.menu')) // navigation icon
-          .width('20vp')
-          .height('16vp')
-          .offset({ x: '-145vp', y: '0vp' })
-
-        Stack() { // floating action button
-          Rect()
-            .width(this.model.fabWidth)
-            .height(this.model.fabHeight)
-            .fill(Color.Black)
-            .radius('30vp')
-
-          Image($r('app.media.plus'))
-            .width('28vp')
-            .height('28vp')
-
-        }.offset({ x: '0vp', y: '-' + (Number(this.model.elevation.slice(0, -2)) - 28).toString() + 'vp' })
-
-        if (this.model.optionIconsMenu.length == 1) {
-          Image(this.model.optionIconsMenu[0].image) // action item
-            .width(this.model.optionIconsMenu[0].width)
-            .height(this.model.optionIconsMenu[0].height)
-            .offset({ x: '115vp', y: '0vp' })
-        }
-        else if (this.model.optionIconsMenu.length == 2) {
-          Image(this.model.optionIconsMenu[0].image) // action item
-            .width(this.model.optionIconsMenu[0].width)
-            .height(this.model.optionIconsMenu[0].height)
-            .offset({ x: '115vp', y: '0vp' })
-
-          Image(this.model.optionIconsMenu[1].image) // action item
-            .width(this.model.optionIconsMenu[1].width)
-            .height(this.model.optionIconsMenu[1].height)
-            .offset({ x: '155vp', y: '0vp' })
+          .fill(this.model.getBottomBarColor())
+        if (this.model.getBottomBarDesignRight()) {
+          Stack() { // left icon list
+            Flex({
+              direction: FlexDirection.Row,
+              justifyContent: FlexAlign.SpaceAround,
+              alignItems: ItemAlign.Start
+            }) {
+              ForEach(this.model.getLeftIconsList(), item => {
+                Image(item.image)
+                  .width(item.width)
+                  .height(item.height)
+              })
+            }.width(40 * this.model.getLeftIconsList().length.toString() + 'vp')
+          }
+          .width('140vp')
+          .offset({ x: '-90vp', y: '5vp' })
         }
         else {
-          Image(this.model.optionIconsMenu[0].image) // action item
-            .width(this.model.optionIconsMenu[0].width)
-            .height(this.model.optionIconsMenu[0].height)
-            .offset({ x: '115vp', y: '0vp' })
-          if (this.model.showPopUp) { // overflow menu shadow
-            Circle()
-              .width('34vp')
-              .height('34vp')
-              .fill("rgb(167,51,255)")
-              .offset({ x: '155vp', y: '0vp' })
-              .opacity(this.opacityValue)
-              .onClick(() => this.onClick())
+          if(this.model.getRemoveNavigationIcon()!=true){
+            Image(this.model.getNavigationIcon()) // navigation icon
+              .width(this.model.getNavigationIconWidth())
+              .height(this.model.getNavigationIconHeight())
+              .offset({ x: '-145vp', y: '0vp' })
           }
 
-          Image($r('app.media.dot_menu')) // overflow menu
-            .width('6vp')
-            .height('24vp')
-            .offset({ x: '155vp', y: '0vp' })
-            .onClick(() => this.onClick())
+          if (this.model.getOptionIconsMenu().length == 1) {
+            Image(this.model.getOptionIconsMenu()[0].image) // action item
+              .width(this.model.getOptionIconsMenu()[0].width)
+              .height(this.model.getOptionIconsMenu()[0].height)
+              .offset({ x: '115vp', y: '0vp' })
+          }
+          else if (this.model.getOptionIconsMenu().length == 2) {
+            Image(this.model.getOptionIconsMenu()[0].image) // action item
+              .width(this.model.getOptionIconsMenu()[0].width)
+              .height(this.model.getOptionIconsMenu()[0].height)
+              .offset({ x: '115vp', y: '0vp' })
 
-
-          if (this.model.showPopUp) {
-            Stack() { // overflow pop-up
-              Rect()
-                .width('100%')
-                .height('100%')
-                .fill('rgb(145,0,255)')
-                .radius('7vp')
-              Flex({
-                direction: FlexDirection.Column,
-                justifyContent: FlexAlign.SpaceAround,
-                alignItems: ItemAlign.Start
-              }) {
-                ForEach(this.model.optionIconsMenu.slice(1, this.model.optionIconsMenu.length), item => {
-                  Text(item.text)
-                    .fontColor(Color.White)
-                    .fontWeight(600)
-                    .fontSize('17vp')
-                })
-              }
+            Image(this.model.getOptionIconsMenu()[1].image) // action item
+              .width(this.model.getOptionIconsMenu()[1].width)
+              .height(this.model.getOptionIconsMenu()[1].height)
+              .offset({ x: '155vp', y: '0vp' })
+          }
+          else {
+            Image(this.model.getOptionIconsMenu()[0].image) // action item
+              .width(this.model.getOptionIconsMenu()[0].width)
+              .height(this.model.getOptionIconsMenu()[0].height)
+              .offset({ x: '115vp', y: '0vp' })
+            if (this.model.getShowPopUp()) { // overflow menu shadow
+              Circle()
+                .width('34vp')
+                .height('34vp')
+                .fill("rgb(167,51,255)")
+                .offset({ x: '155vp', y: '0vp' })
+                .opacity(this.opacityValue)
+                .onClick(() => this.onClick())
             }
-            .width('140vp')
-            .height((41 * this.model.optionIconsMenu.length).toString() + 'vp')
-            .opacity(this.opacityValue)
-            .offset({ x: '90vp', y: '-' + (150 + 41 * (this.model.optionIconsMenu.length - 3)).toString() + 'vp' })
+
+            Image($r('app.media.dot_menu')) // overflow menu
+              .width('6vp')
+              .height('24vp')
+              .offset({ x: '155vp', y: '0vp' })
+              .onClick(() => this.onClick())
+
+
+            if (this.model.getShowPopUp()) {
+              Stack() { // overflow pop-up
+                Rect()
+                  .width('100%')
+                  .height('100%')
+                  .fill('rgb(145,0,255)')
+                  .radius('7vp')
+                Flex({
+                  direction: FlexDirection.Column,
+                  justifyContent: FlexAlign.SpaceAround,
+                  alignItems: ItemAlign.Start
+                }) {
+                  ForEach(this.model.getOptionIconsMenu().slice(1, this.model.getOptionIconsMenu().length), item => {
+                    Text(item.text)
+                      .fontColor(Color.White)
+                      .fontWeight(600)
+                      .fontSize('17vp')
+                  })
+                }
+              }
+              .width('140vp')
+              .height((41 * this.model.getOptionIconsMenu().length).toString() + 'vp')
+              .opacity(this.opacityValue)
+              .offset({ x: '90vp', y: '-' + (150 + 41 * (this.model.getOptionIconsMenu().length - 3)).toString() + 'vp' })
+            }
           }
         }
+        if(this.model.getRemoveFab()!=true){
+          Stack() { // floating action button
+            Rect()
+              .width(this.model.getFabWidth())
+              .height(this.model.getFabHeight())
+              .fill(Color.Black)
+              .radius(this.model.getBottomBarDesignRight() ? '18vp' : '30vp')
 
+            Image($r('app.media.plus'))
+              .width('28vp')
+              .height('28vp')
+
+          }.offset({
+            x: this.model.getBottomBarDesignRight() ? '135vp' : '0vp',
+            y: this.model.getBottomBarDesignRight() ? '0vp' : '-' + (Number(this.model.getElevation().slice(0, -2)) - 28).toString() + 'vp'
+          })
+        }
       }.width('100%')
-      .height(this.model.elevation)
+      .height(this.model.getElevation())
     }
     .width('100%')
     .height('100%')
