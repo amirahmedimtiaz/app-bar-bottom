@@ -8,7 +8,7 @@ struct Index {
 
   public aboutToAppear(): void {
     this.bottomBarModel.reset()
-    this.bottomBarModel.setBottomBarDesignRight(true)
+//    this.bottomBarModel.setBottomBarDesignRight(true)
   }
 
   build() {
