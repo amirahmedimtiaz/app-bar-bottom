@@ -1,0 +1,11 @@
+{
+  "module": {
+    "name": "appbottombar",
+    "type": "har",
+    "deviceTypes": [
+      "phone",
+      "tablet"
+    ],
+    "uiSyntax": "ets"
+  }
+}
