@@ -13,5 +13,9 @@
  * limitations under the License.
  */
 
-export { BottomBar } from "./src/main/ets/components/bottomBar";
-export { BottomBarModel } from "./src/main/ets/components/bottomBarModel";
+//export { BottomBar } from "./src/main/ets/components/bottomBar";
+//export { BottomBarModel } from "./src/main/ets/components/bottomBarModel";
+
+export {
+  AppBar, FloatingActionButton, OptionMenu, NavigationIcon
+} from './src/main/ets/components/appBottomBar'
