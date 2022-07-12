@@ -13,7 +13,7 @@
  * limitations under the License.
  */
 import prompt from '@system.prompt';
-import { BottomBar, NavigationIcon, FloatingActionButton, OptionMenu,FabPosition } from "@ohos/material-bottombar"
+import { BottomBar, NavigationIcon, FloatingActionButton, OptionMenu, FabPosition } from "@ohos/material-bottombar"
 
 
 @Entry
@@ -32,6 +32,7 @@ struct Index {
       message: 'Navigation Button'
     })
   }
+
   private fabClick() {
     prompt.showToast({
       message: 'Floating Action Button'
@@ -43,7 +44,6 @@ struct Index {
       message: 'Option:: ' + option.getText()
     })
   }
-
 
   private buildFirstBottomBar() {
     let navigationIcon = new NavigationIcon.Model()
@@ -79,6 +79,7 @@ struct Index {
       .addFabListener(this.fabClick)
       .addOptionListener(this.optionClick)
   }
+
   private buildSecondBottomBar() {
     let navigationIcon = new NavigationIcon.Model()
       .setIcon($r('app.media.menu'))
@@ -113,7 +114,6 @@ struct Index {
       .addFabListener(this.fabClick)
       .addOptionListener(this.optionClick)
   }
-
 
   build() {
     Column() {

@@ -60,19 +60,21 @@ struct BottomBar {
                 model: this.model.getNavigationIcon(),
                 navigationListener: this.model.getNavigationListener()
               })
-             }.width('20%')
-             Flex({justifyContent:FlexAlign.Center}){
+            }.width('20%')
+
+            Flex({ justifyContent: FlexAlign.Center }) {
               FloatingActionButton({
                 model: this.model.getFabModel(),
                 fabClickListener: this.model.getFabListener()
               })
-              }.width('60%')
-              Flex({justifyContent:FlexAlign.End}){
+            }.width('60%')
+
+            Flex({ justifyContent: FlexAlign.End }) {
               OptionMenu({
                 options: this.model.getOptions(),
                 optionClickListener: this.model.getOptionListener()
               })
-              }.width('20%')
+            }.width('20%')
 
           }
         }
@@ -87,11 +89,8 @@ struct BottomBar {
 namespace BottomBar {
   export class Model {
     private navigationIcon: NavigationIcon.Model = undefined
-
     private floatingActionButton: FloatingActionButton.Model = undefined
-
     private options: OptionMenu.Model [] = []
-
     private backgroundColor: string | Resource | Color = Color.Blue
     private fabPosition: FabPosition = FabPosition.Center
     private navigationClickListener: () => void = undefined

@@ -34,14 +34,14 @@ export struct FloatingActionButton {
           .width(this.model.getFabWidth())
           .height(this.model.getFabHeight())
           .fill(Color.Black)
-          .radius(this.model.getFabPosition()==FabPosition.Right ? '18vp' : '30vp')
+          .radius(this.model.getFabPosition() == FabPosition.Right ? '18vp' : '30vp')
 
         Image(this.model.getFabIcon())
           .width(this.model.getFabIconWidth())
           .height(this.model.getFabIconHeight())
 
 
-      }.margin({top: this.model.getFabPosition()==FabPosition.Right ? '0vp': '-32vp'})
+      }.margin({ top: this.model.getFabPosition() == FabPosition.Right ? '0vp' : '-32vp' })
       .onClick(() => this.onClick())
     }
   }
@@ -133,6 +133,5 @@ export namespace FloatingActionButton {
       }
       return this
     }
-
   }
 }

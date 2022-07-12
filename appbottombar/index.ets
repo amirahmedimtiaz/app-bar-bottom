@@ -14,5 +14,5 @@
  */
 
 export {
-  BottomBar, FloatingActionButton, OptionMenu, NavigationIcon,FabPosition
+  BottomBar, FloatingActionButton, OptionMenu, NavigationIcon, FabPosition
 } from './src/main/ets/components/appBottomBar'
