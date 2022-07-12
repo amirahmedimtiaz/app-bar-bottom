@@ -28,7 +28,7 @@ export struct FloatingActionButton {
   }
 
   build() {
-    if (this.model != undefined && this.model != null) {
+    if (this.model != undefined && this.model != null && this.model.getFabIcon()!=null  && this.model.getFabIcon()!=undefined) {
       Stack() {
         Rect()
           .width(this.model.getFabWidth())
@@ -52,7 +52,7 @@ export namespace FloatingActionButton {
     private fabHeight: string = '56vp'
     private fabWidth: string = '56vp'
     private fabPosition: FabPosition = FabPosition.Center
-    private fabIcon: Resource = $r('app.media.plus')
+    private fabIcon: Resource = null
     private fabIconWidth: string = '28vp'
     private fabIconHeight: string = '28vp'
 
@@ -63,8 +63,6 @@ export namespace FloatingActionButton {
     setFabIcon(fabIcon: Resource): Model{
       if (fabIcon != null && fabIcon != undefined) {
         this.fabIcon = fabIcon
-      } else {
-        this.fabIcon = $r('app.media.plus')
       }
       return this
     }

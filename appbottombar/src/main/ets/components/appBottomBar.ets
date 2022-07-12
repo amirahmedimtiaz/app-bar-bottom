@@ -32,19 +32,11 @@ struct BottomBar {
       Column() {
         Row() {
           if (this.model.getFabPosition() == FabPosition.Right) {
-            Flex({
-              direction: FlexDirection.Row,
-              justifyContent: FlexAlign.SpaceAround,
-              alignItems: ItemAlign.Start
-            }) {
-              ForEach(this.model.getOptions(), item => {
-                Image(item.getIcon())
-                  .width(item.getWidth())
-                  .height(item.getHeight())
-              })
-            }.width((50 * this.model.getOptions().length).toString() + 'vp')
-            .flexGrow(5)
-
+            OptionMenu({
+              options: this.model.getOptions(),
+              optionClickListener: this.model.getOptionListener(),
+              fabPosition:this.model.getFabPosition()
+            })
             Flex({ direction: FlexDirection.Row,
               justifyContent: FlexAlign.End,
               alignItems: ItemAlign.Center }) {

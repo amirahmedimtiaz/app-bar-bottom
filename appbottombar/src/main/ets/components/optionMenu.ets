@@ -13,26 +13,34 @@
  * limitations under the License.
  */
 
+import { FabPosition } from './FabPosition'
+
 @Component
 export struct OptionMenu {
   private options: OptionMenu.Model [] = []
   private optionClickListener: (option: OptionMenu.Model) => void = undefined
+  private fabPosition: FabPosition = FabPosition.Center
 
   hasOptions(): boolean {
     return this.options != undefined && this.options != null && this.options.length > 0
   }
 
   showOverflowMenu(): boolean {
-    return this.options.length >= 3
+    if(this.fabPosition == FabPosition.Center) return this.options.length >= 3
+    else  return this.options.length >= 5
   }
 
   getOverflowMenuOptions(): OptionMenu.Model [] {
-    return this.options.slice(1, this.options.length)
+    if(this.fabPosition == FabPosition.Center) return this.options.slice(1, this.options.length)
+    else return this.options.slice(3, this.options.length)
   }
 
   getOptions(): OptionMenu.Model [] {
-    if (this.showOverflowMenu()) {
+    if (this.showOverflowMenu() && this.fabPosition==FabPosition.Center) {
       return this.options.slice(0, 1)
+    }
+    if(this.showOverflowMenu() && this.fabPosition==FabPosition.Right){
+      return this.options.slice(0, 3)
     }
     return this.options
   }
@@ -80,6 +88,14 @@ export struct OptionMenu {
 
   build() {
     Row() {
+      if (this.showOverflowMenu() && this.fabPosition==FabPosition.Right) {
+        Image($r('app.media.dot_menu'))
+          .width('24vp')
+          .height('24vp')
+          .margin({ right: '8vp' })
+          .objectFit(ImageFit.Fill | ImageFit.Contain)
+          .bindMenu(this.OverflowMenuBuilder())
+      }
       if (this.hasOptions()) {
         ForEach(this.getOptions(),
           (item, index) => {
@@ -92,7 +108,7 @@ export struct OptionMenu {
           }, item => item.getId())
       }
 
-      if (this.showOverflowMenu()) {
+      if (this.showOverflowMenu() && this.fabPosition==FabPosition.Center) {
         Image($r('app.media.dot_menu'))
           .width('24vp')
           .height('24vp')
