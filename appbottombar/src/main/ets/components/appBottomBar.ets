@@ -16,6 +16,7 @@
 import { NavigationIcon } from './navigationIcon'
 import { FloatingActionButton } from './floatingActionButton'
 import { OptionMenu } from './optionMenu'
+import { FabPosition } from './FabPosition'
 
 
 @Component
@@ -30,7 +31,7 @@ struct BottomBar {
     if (this.buildUI()) {
       Column() {
         Row() {
-          if (this.model.getBottomBarDesignRight()) {
+          if (this.model.getFabPosition() == FabPosition.Right) {
             Flex({
               direction: FlexDirection.Row,
               justifyContent: FlexAlign.SpaceAround,
@@ -53,7 +54,7 @@ struct BottomBar {
               })
             }.flexGrow(1).flexShrink(1).padding({ right: '16vp' })
           }
-          else {
+          if (this.model.getFabPosition() == FabPosition.Center) {
 
             NavigationIcon({
               model: this.model.getNavigationIcon(),
@@ -74,7 +75,7 @@ struct BottomBar {
         }
         .width('100%')
         .padding({ left: '16vp', right: '8vp' })
-        .height(this.model.getBarHeight())
+        .height(this.model.getFabPosition() ? '80vp' : '64vp')
       }.backgroundColor(this.model.getBackgroundColor())
     }
   }
@@ -89,9 +90,7 @@ namespace BottomBar {
     private options: OptionMenu.Model [] = []
 
     private backgroundColor: string | Resource | Color = Color.Blue
-    private bottomBarDesignRight: boolean = false
-    private barHeight: string = '56vp'
-
+    private fabPosition: FabPosition = FabPosition.Center
     private navigationClickListener: () => void = undefined
     private fabClickListener: () => void = undefined
     private optionClickListener: (option: OptionMenu.Model) => void = undefined
@@ -113,29 +112,15 @@ namespace BottomBar {
       return this
     }
 
-    getBarHeight(): string  {
-      return this.barHeight
+    getFabPosition(): FabPosition {
+      return this.fabPosition
     }
 
-    setBarHeight(barHeight: string): Model {
-      if (barHeight != null && barHeight != undefined) {
-        this.barHeight = barHeight
+    setFabPosition(fabPosition: FabPosition): Model {
+      if (fabPosition != null && fabPosition != undefined) {
+        this.fabPosition = fabPosition
       } else {
-        this.barHeight = this.bottomBarDesignRight ? '92vp' : '56vp'
-      }
-      return this
-    }
-
-    getBottomBarDesignRight(): boolean {
-      return this.bottomBarDesignRight
-    }
-
-    setBottomBarDesignRight(bottomBarDesignRight: boolean): Model {
-      if (bottomBarDesignRight != null && bottomBarDesignRight != undefined) {
-        this.bottomBarDesignRight = bottomBarDesignRight
-        this.setBarHeight('92vp')
-      } else {
-        this.bottomBarDesignRight = false
+        this.fabPosition = FabPosition.Center
       }
       return this
     }
@@ -221,3 +206,5 @@ namespace BottomBar {
 export {
   BottomBar, FloatingActionButton, OptionMenu, NavigationIcon
 }
+
+export { FabPosition } from './FabPosition'

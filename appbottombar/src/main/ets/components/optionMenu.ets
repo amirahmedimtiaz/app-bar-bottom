@@ -64,7 +64,7 @@ export struct OptionMenu {
   private OverflowMenuItem(option: OptionMenu.Model, showDivider: boolean) {
     Flex() {
       Column() {
-        Text(option.getLabel())
+        Text(option.getText())
           .width('100%')
           .fontSize('18fp')
           .padding({ left: 4, right: 4 })
@@ -108,23 +108,18 @@ export struct OptionMenu {
 export namespace OptionMenu {
   export class Model {
     private id: string | number = undefined
-    private label: string | Resource = ''
-
-    private text: string = ''
+    private text: string | Resource = ''
     private icon: Resource = undefined
 
     private width: string | number = '24vp'
     private height: string | number = '24vp'
-    private menuWidth: string | number = '145vp'
 
-    constructor(id, label) {
+    constructor(id) {
       this.id = id
-      this.label = label
     }
 
     buildUI(): boolean {
-      return (this.id != undefined && this.id != null) &&
-      (this.label != undefined && this.label != null)
+      return (this.id != undefined && this.id != null)
     }
 
     getId(): string | number {
@@ -136,28 +131,15 @@ export namespace OptionMenu {
       return this
     }
 
-    getLabel(): string | Resource {
-      return this.label
-    }
-
-    getText(): string{
+    getText(): string | Resource {
       return this.text
     }
 
-    setText(text: string): Model {
+    setText(text: string | Resource): Model {
       if (text == undefined || text == null) {
         this.text = ''
       } else {
         this.text = text
-      }
-      return this
-    }
-
-    setLabel(label: string | Resource): Model {
-      if (label == undefined || label == null) {
-        this.label = ''
-      } else {
-        this.label = label
       }
       return this
     }

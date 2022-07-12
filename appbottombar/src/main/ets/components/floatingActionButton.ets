@@ -13,6 +13,8 @@
  * limitations under the License.
  */
 
+import { FabPosition } from './FabPosition'
+
 
 @Component
 export struct FloatingActionButton {
@@ -32,17 +34,14 @@ export struct FloatingActionButton {
           .width(this.model.getFabWidth())
           .height(this.model.getFabHeight())
           .fill(Color.Black)
-          .radius(this.model.getFabPositionRight() ? '18vp' : '30vp')
+          .radius(this.model.getFabPosition()==FabPosition.Right ? '18vp' : '30vp')
+
         Image(this.model.getFabIcon())
           .width(this.model.getFabIconWidth())
           .height(this.model.getFabIconHeight())
 
-      }
-      .offset({
-        x: '0vp',
-        y: this.model.getFabPositionRight() ? '0vp' : '-' + (Number(this.model.getFabElevation()
-          .slice(0, -2)) - 28).toString() + 'vp'
-      })
+
+      }.margin({top: this.model.getFabPosition()==FabPosition.Right ? '0vp': '-32vp'})
       .onClick(() => this.onClick())
     }
   }
@@ -52,8 +51,7 @@ export namespace FloatingActionButton {
   export class Model {
     private fabHeight: string = '56vp'
     private fabWidth: string = '56vp'
-    private fabPositionRight: boolean = false
-    private fabElevation: string = this.fabPositionRight ? '92vp' : '56vp'
+    private fabPosition: FabPosition = FabPosition.Center
     private fabIcon: Resource = $r('app.media.plus')
     private fabIconWidth: string = '28vp'
     private fabIconHeight: string = '28vp'
@@ -97,16 +95,15 @@ export namespace FloatingActionButton {
       return this
     }
 
-    getFabPositionRight(): boolean {
-      return this.fabPositionRight
+    getFabPosition(): FabPosition {
+      return this.fabPosition
     }
 
-    setFabPositionRight(fabPositionRight: boolean): Model {
-      if (fabPositionRight != null && fabPositionRight != undefined) {
-        this.fabPositionRight = fabPositionRight
-        this.setFabElevation('92vp')
+    setFabPosition(fabPosition: FabPosition): Model {
+      if (fabPosition != null && fabPosition != undefined) {
+        this.fabPosition = fabPosition
       } else {
-        this.fabPositionRight = false
+        this.fabPosition = FabPosition.Center
       }
       return this
     }
@@ -137,17 +134,5 @@ export namespace FloatingActionButton {
       return this
     }
 
-    getFabElevation(): string  {
-      return this.fabElevation
-    }
-
-    setFabElevation(fabElevation: string): Model {
-      if (fabElevation != null && fabElevation != undefined) {
-        this.fabElevation = fabElevation
-      } else {
-        this.fabElevation = this.fabPositionRight ? '92vp' : '56vp'
-      }
-      return this
-    }
   }
 }

@@ -12,7 +12,8 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
-export {
-  BottomBar, FloatingActionButton, OptionMenu, NavigationIcon,FabPosition
-} from './src/main/ets/components/appBottomBar'
+export enum FabPosition
+{
+  Center,
+  Right
+}
