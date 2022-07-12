@@ -26,23 +26,25 @@ let navigationIcon = new NavigationIcon.Model()
 
     let floatingActionButton = new FloatingActionButton.Model()
       .setFabIcon($r('app.media.plus'))
+      .setFabPosition(FabPosition.Center)
 
     let options = [
-      new OptionMenu.Model(1, "search")
+      new OptionMenu.Model(1)
         .setIcon($r('app.media.search'))
         .setText('search'),
-      new OptionMenu.Model(2, "settings")
+      new OptionMenu.Model(2)
         .setIcon($r('app.media.settings'))
         .setText('Settings'),
-      new OptionMenu.Model(3, "feedback")
+      new OptionMenu.Model(3)
         .setIcon($r('app.media.feedback'))
         .setText('Send Feedback'),
-      new OptionMenu.Model(3, "help")
+      new OptionMenu.Model(4)
         .setIcon($r('app.media.help'))
         .setText('Help')
     ]
 
     this.bottomBarModel1
+      .setFabPosition(FabPosition.Center)
       .setNavigationIcon(navigationIcon)
       .setFabModel(floatingActionButton)
       .setOptions(options)
@@ -70,28 +72,27 @@ let navigationIcon = new NavigationIcon.Model()
       .setIcon($r('app.media.menu'))
 
     let floatingActionButton = new FloatingActionButton.Model()
-      .setFabPositionRight(true)
+      .setFabPosition(FabPosition.Right)
       .setFabIcon($r('app.media.plus'))
-      .setFabElevation('56vp')
 
     let options = [
-      new OptionMenu.Model(1, "check_box")
+      new OptionMenu.Model(1)
         .setIcon($r('app.media.check_box'))
         .setText("check_box"),
-      new OptionMenu.Model(2, "brush")
+      new OptionMenu.Model(2)
         .setIcon($r('app.media.brush'))
         .setText('brush'),
-      new OptionMenu.Model(3, "mic")
+      new OptionMenu.Model(3)
         .setIcon($r('app.media.mic'))
         .setText('mic')
         .setWidth('16vp'),
-      new OptionMenu.Model(3, "images")
+      new OptionMenu.Model(4)
         .setIcon($r('app.media.images'))
-        .setText('mic')
+        .setText('images')
     ]
 
     this.bottomBarModel2
-      .setBottomBarDesignRight(true)
+      .setFabPosition(FabPosition.Right)
       .setNavigationIcon(navigationIcon)
       .setFabModel(floatingActionButton)
       .setOptions(options)
