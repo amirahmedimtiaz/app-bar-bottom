@@ -55,22 +55,25 @@ struct BottomBar {
             }.flexGrow(1).flexShrink(1).padding({ right: '16vp' })
           }
           if (this.model.getFabPosition() == FabPosition.Center) {
-
-            NavigationIcon({
-              model: this.model.getNavigationIcon(),
-              navigationListener: this.model.getNavigationListener()
-            })
-            Flex({ justifyContent: FlexAlign.Center }) {
+            Flex() {
+              NavigationIcon({
+                model: this.model.getNavigationIcon(),
+                navigationListener: this.model.getNavigationListener()
+              })
+             }.width('20%')
+             Flex({justifyContent:FlexAlign.Center}){
               FloatingActionButton({
                 model: this.model.getFabModel(),
                 fabClickListener: this.model.getFabListener()
               })
-            }.flexGrow(1).flexShrink(1)
+              }.width('60%')
+              Flex({justifyContent:FlexAlign.End}){
+              OptionMenu({
+                options: this.model.getOptions(),
+                optionClickListener: this.model.getOptionListener()
+              })
+              }.width('20%')
 
-            OptionMenu({
-              options: this.model.getOptions(),
-              optionClickListener: this.model.getOptionListener()
-            })
           }
         }
         .width('100%')
