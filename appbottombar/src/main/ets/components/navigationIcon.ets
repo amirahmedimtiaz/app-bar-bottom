@@ -29,7 +29,6 @@ export struct NavigationIcon {
       Image(this.model.getIcon())
         .width(this.model.getWidth())
         .height(this.model.getHeight())
-        .offset({ x: '-145vp', y: '0vp' })
         .onClick(() => this.onClick())
     }
   }

@@ -17,17 +17,24 @@
 export struct OptionMenu {
   private options: OptionMenu.Model [] = []
   private optionClickListener: (option: OptionMenu.Model) => void = undefined
-  @State private showPopUp: boolean = false
-  @State private opacityValue: number = 0
 
-  private onDotMenuClick() {
-    this.showPopUp = !this.showPopUp
-    animateTo({
-      duration: 300,
-    }, () => {
-      if (this.opacityValue == 0) this.opacityValue = 1
-      else this.opacityValue = 0
-    })
+  hasOptions(): boolean {
+    return this.options != undefined && this.options != null && this.options.length > 0
+  }
+
+  showOverflowMenu(): boolean {
+    return this.options.length >= 3
+  }
+
+  getOverflowMenuOptions(): OptionMenu.Model [] {
+    return this.options.slice(1, this.options.length)
+  }
+
+  getOptions(): OptionMenu.Model [] {
+    if (this.showOverflowMenu()) {
+      return this.options.slice(0, 1)
+    }
+    return this.options
   }
 
   private onOptionClick(option: OptionMenu.Model) {
@@ -36,77 +43,65 @@ export struct OptionMenu {
     }
   }
 
-  build() {
-    if (this.options.length == 1) {
-      Image(this.options[0].getIcon())
-        .width(this.options[0].getWidth())
-        .height(this.options[0].getHeight())
-        .onClick(()=>this.onOptionClick(this.options[0]))
-        .offset({ x: '115vp', y: '0vp' })
-    }
-    else if (this.options.length == 2) {
-      Image(this.options[0].getIcon())
-        .width(this.options[0].getWidth())
-        .height(this.options[0].getHeight())
-        .onClick(()=>this.onOptionClick(this.options[0]))
-        .offset({ x: '115vp', y: '0vp' })
-
-      Image(this.options[1].getIcon())
-        .width(this.options[1].getWidth())
-        .height(this.options[1].getHeight())
-        .onClick(()=>this.onOptionClick(this.options[1]))
-        .offset({ x: '155vp', y: '0vp' })
-    }
-    else {
-      Image(this.options[0].getIcon())
-        .width(this.options[0].getWidth())
-        .height(this.options[0].getHeight())
-        .onClick(()=>this.onOptionClick(this.options[0]))
-        .offset({ x: '115vp', y: '0vp' })
-      if (this.showPopUp) {
-        Circle()
-          .width('34vp')
-          .height('34vp')
-          .fill("rgb(167,51,255)")
-          .offset({ x: '155vp', y: '0vp' })
-          .opacity(this.opacityValue)
-          .onClick(() => this.onDotMenuClick())
+  @Builder
+  private OverflowMenuBuilder() {
+    Column() {
+      List() {
+        ForEach(this.getOverflowMenuOptions(),
+          (item, index) => {
+            ListItem() {
+              this.OverflowMenuItem(
+                item,
+                index != (this.getOverflowMenuOptions().length - 1)
+              )
+            }
+          }, item => item.getId())
       }
+    }
+  }
 
-      Image($r('app.media.dot_menu'))
-        .width('6vp')
-        .height('24vp')
-        .offset({ x: '155vp', y: '0vp' })
-        .onClick(() => this.onDotMenuClick())
+  @Builder
+  private OverflowMenuItem(option: OptionMenu.Model, showDivider: boolean) {
+    Flex() {
+      Column() {
+        Text(option.getLabel())
+          .width('100%')
+          .fontSize('18fp')
+          .padding({ left: 4, right: 4 })
 
-
-      if (this.showPopUp) {
-        Stack() {
-          Rect()
-            .width('100%')
-            .height('100%')
-            .fill('rgb(145,0,255)')
-            .radius('7vp')
-          Flex({
-            direction: FlexDirection.Column,
-            justifyContent: FlexAlign.SpaceAround,
-            alignItems: ItemAlign.Start
-          }) {
-            ForEach(this.options.slice(1, this.options.length), item => {
-              Text(item.getText())
-                .fontColor(Color.White)
-                .fontWeight(600)
-                .fontSize('17vp')
-                .margin({left: '10vp',right: '10vp'})
-            })
-          }.onClick(()=>this.onDotMenuClick())
+        if (showDivider) {
+          Divider().height(1).margin({ top: 8 })
         }
-        .width('145vp')
-        .height((41 * this.options.length).toString() + 'vp')
-        .opacity(this.opacityValue)
-        .offset({ x: '90vp', y: '-' + (150 + 41 * (this.options.length - 3)).toString() + 'vp' })
       }
     }
+    .margin(4)
+    .onClick(() => this.onOptionClick(option))
+  }
+
+  build() {
+    Row() {
+      if (this.hasOptions()) {
+        ForEach(this.getOptions(),
+          (item, index) => {
+            Image(item.getIcon())
+              .width(item.getWidth())
+              .height(item.getHeight())
+              .margin({ left: index > 0 ? '8vp' : '0vp' })
+              .objectFit(ImageFit.Fill | ImageFit.Contain)
+              .onClick(() => this.onOptionClick(item))
+          }, item => item.getId())
+      }
+
+      if (this.showOverflowMenu()) {
+        Image($r('app.media.dot_menu'))
+          .width('24vp')
+          .height('24vp')
+          .margin({ left: '8vp' })
+          .objectFit(ImageFit.Fill | ImageFit.Contain)
+          .bindMenu(this.OverflowMenuBuilder())
+      }
+    }
+
   }
 }
 
@@ -205,6 +200,5 @@ export namespace OptionMenu {
       }
       return this
     }
-
   }
 }

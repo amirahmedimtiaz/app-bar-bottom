@@ -19,8 +19,8 @@ import { OptionMenu } from './optionMenu'
 
 
 @Component
-struct AppBar {
-  @State private model: AppBar.Model = new AppBar.Model()
+struct BottomBar {
+  @State private model: BottomBar.Model = new BottomBar.Model()
 
   private buildUI(): boolean {
     return this.model != undefined && this.model != null && this.model.buildUI()
@@ -28,52 +28,59 @@ struct AppBar {
 
   build() {
     if (this.buildUI()) {
-      Row() {
-        Stack() {
-          Rect() // container
-            .width('100%')
-            .height('100%')
-            .fill(this.model.getBackgroundColor())
+      Column() {
+        Row() {
           if (this.model.getBottomBarDesignRight()) {
-            Stack() { // left icon list
-              Flex({
-                direction: FlexDirection.Row,
-                justifyContent: FlexAlign.SpaceAround,
-                alignItems: ItemAlign.Start
-              }) {
-                ForEach(this.model.getOptions(), item => {
-                  Image(item.getIcon())
-                    .width(item.getWidth())
-                    .height(item.getHeight())
-                })
-              }.width((40 * this.model.getOptions().length).toString() + 'vp')
-            }
-            .width('140vp')
-            .offset({ x: '-90vp', y: '5vp' })
+            Flex({
+              direction: FlexDirection.Row,
+              justifyContent: FlexAlign.SpaceAround,
+              alignItems: ItemAlign.Start
+            }) {
+              ForEach(this.model.getOptions(), item => {
+                Image(item.getIcon())
+                  .width(item.getWidth())
+                  .height(item.getHeight())
+              })
+            }.width((50 * this.model.getOptions().length).toString() + 'vp')
+            .flexGrow(5)
+
+            Flex({ direction: FlexDirection.Row,
+              justifyContent: FlexAlign.End,
+              alignItems: ItemAlign.Center }) {
+              FloatingActionButton({
+                model: this.model.getFabModel(),
+                fabClickListener: this.model.getFabListener()
+              })
+            }.flexGrow(1).flexShrink(1).padding({ right: '16vp' })
           }
           else {
+
             NavigationIcon({
               model: this.model.getNavigationIcon(),
               navigationListener: this.model.getNavigationListener()
             })
+            Flex({ justifyContent: FlexAlign.Center }) {
+              FloatingActionButton({
+                model: this.model.getFabModel(),
+                fabClickListener: this.model.getFabListener()
+              })
+            }.flexGrow(1).flexShrink(1)
 
             OptionMenu({
               options: this.model.getOptions(),
               optionClickListener: this.model.getOptionListener()
             })
           }
-          FloatingActionButton({
-            model: this.model.getFabModel(),
-            fabClickListener: this.model.getFabListener()
-          })
-        }.width('100%')
-        .height(this.model.getElevation())
-      }
+        }
+        .width('100%')
+        .padding({ left: '16vp', right: '8vp' })
+        .height(this.model.getBarHeight())
+      }.backgroundColor(this.model.getBackgroundColor())
     }
   }
 }
 
-namespace AppBar {
+namespace BottomBar {
   export class Model {
     private navigationIcon: NavigationIcon.Model = undefined
 
@@ -83,7 +90,7 @@ namespace AppBar {
 
     private backgroundColor: string | Resource | Color = Color.Blue
     private bottomBarDesignRight: boolean = false
-    private elevation: string = '56vp'
+    private barHeight: string = '56vp'
 
     private navigationClickListener: () => void = undefined
     private fabClickListener: () => void = undefined
@@ -106,15 +113,15 @@ namespace AppBar {
       return this
     }
 
-    getElevation(): string  {
-      return this.elevation
+    getBarHeight(): string  {
+      return this.barHeight
     }
 
-    setElevation(elevation: string ): Model {
-      if (elevation != null && elevation != undefined) {
-        this.elevation = elevation
+    setBarHeight(barHeight: string): Model {
+      if (barHeight != null && barHeight != undefined) {
+        this.barHeight = barHeight
       } else {
-        this.elevation = this.bottomBarDesignRight? '92vp':'56vp'
+        this.barHeight = this.bottomBarDesignRight ? '92vp' : '56vp'
       }
       return this
     }
@@ -123,10 +130,10 @@ namespace AppBar {
       return this.bottomBarDesignRight
     }
 
-    setBottomBarDesignRight(bottomBarDesignRight:boolean): Model {
+    setBottomBarDesignRight(bottomBarDesignRight: boolean): Model {
       if (bottomBarDesignRight != null && bottomBarDesignRight != undefined) {
         this.bottomBarDesignRight = bottomBarDesignRight
-        this.setElevation('92vp')
+        this.setBarHeight('92vp')
       } else {
         this.bottomBarDesignRight = false
       }
@@ -212,5 +219,5 @@ namespace AppBar {
 }
 
 export {
-  AppBar, FloatingActionButton, OptionMenu, NavigationIcon
+  BottomBar, FloatingActionButton, OptionMenu, NavigationIcon
 }

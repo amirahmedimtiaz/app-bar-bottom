@@ -1,12 +1,26 @@
+/*
+ * Copyright (c) 2022 Application Library Engineering Group.
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 import prompt from '@system.prompt';
-import { AppBar, NavigationIcon, FloatingActionButton, OptionMenu } from "@ohos/app-bottom-bar"
-//{ BottomBar, BottomBarModel }  from "@ohos/app-bottom-bar"
+import { BottomBar, NavigationIcon, FloatingActionButton, OptionMenu } from "@ohos/material-bottombar"
+
 
 @Entry
 @Component
 struct Index {
-  private bottomBarModel1: AppBar.Model = new AppBar.Model();
-  private bottomBarModel2: AppBar.Model = new AppBar.Model();
+  private bottomBarModel1: BottomBar.Model = new BottomBar.Model();
+  private bottomBarModel2: BottomBar.Model = new BottomBar.Model();
 
   public aboutToAppear(): void {
     this.buildFirstBottomBar()
@@ -69,6 +83,7 @@ struct Index {
     let floatingActionButton = new FloatingActionButton.Model()
       .setFabPositionRight(true)
       .setFabIcon($r('app.media.plus'))
+      .setFabElevation('56vp')
 
     let options = [
       new OptionMenu.Model(1, "check_box")
@@ -102,14 +117,14 @@ struct Index {
     Column() {
 
       Text('Bottom Bar 1').fontSize('24fp').width('100%')
-        .margin({ left: '24vp', top: '24vp', bottom: '200vp' })
+        .margin({ left: '24vp', top: '24vp', bottom: '100vp' })
 
-      AppBar({ model: this.bottomBarModel1 })
+      BottomBar({ model: this.bottomBarModel1 })
 
       Text('Bottom Bar 2').fontSize('24fp').width('100%')
-        .margin({ left: '24vp', top: '100vp', bottom: '200vp' })
+        .margin({ left: '24vp', top: '100vp', bottom: '100vp' })
 
-      AppBar({ model: this.bottomBarModel2 })
+      BottomBar({ model: this.bottomBarModel2 })
 
     }
 

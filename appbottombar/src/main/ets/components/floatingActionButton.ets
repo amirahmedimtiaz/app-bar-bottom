@@ -27,7 +27,7 @@ export struct FloatingActionButton {
 
   build() {
     if (this.model != undefined && this.model != null) {
-      Stack() { // floating action button
+      Stack() {
         Rect()
           .width(this.model.getFabWidth())
           .height(this.model.getFabHeight())
@@ -37,11 +37,13 @@ export struct FloatingActionButton {
           .width(this.model.getFabIconWidth())
           .height(this.model.getFabIconHeight())
 
-      }.offset({
-        x: this.model.getFabPositionRight() ? '135vp' : '0vp',
+      }
+      .offset({
+        x: '0vp',
         y: this.model.getFabPositionRight() ? '0vp' : '-' + (Number(this.model.getFabElevation()
           .slice(0, -2)) - 28).toString() + 'vp'
-      }).onClick(() => this.onClick())
+      })
+      .onClick(() => this.onClick())
     }
   }
 }
@@ -60,7 +62,7 @@ export namespace FloatingActionButton {
       return this.fabIcon
     }
 
-    setFabIcon(fabIcon:Resource): Model{
+    setFabIcon(fabIcon: Resource): Model{
       if (fabIcon != null && fabIcon != undefined) {
         this.fabIcon = fabIcon
       } else {
