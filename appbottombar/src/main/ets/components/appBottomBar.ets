@@ -72,7 +72,7 @@ struct BottomBar {
         }
         .width('100%')
         .padding({ left: '16vp', right: '8vp' })
-        .height(this.model.getFabPosition() ? '80vp' : '64vp')
+        .height(this.model.getFabPosition() == FabPosition.Right ? '80vp' : '64vp')
       }.backgroundColor(this.model.getBackgroundColor())
     }
   }

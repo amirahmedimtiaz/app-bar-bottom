@@ -100,14 +100,6 @@ struct Index {
         .setWidth('16vp'),
       new OptionMenu.Model(4)
         .setIcon($r('app.media.images'))
-        .setText('images'),
-      new OptionMenu.Model(3)
-        .setIcon($r('app.media.mic'))
-        .setText('mic')
-        .setWidth('16vp')
-      ,
-      new OptionMenu.Model(4)
-        .setIcon($r('app.media.images'))
         .setText('images')
     ]
 

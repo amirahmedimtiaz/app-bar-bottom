@@ -1,4 +1,4 @@
-# Material AppBar
+# Material BottomBar
 
 This library is developed to provide material bottom bar implemented using extended typescript.
 
